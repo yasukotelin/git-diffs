@@ -13,7 +13,7 @@ import (
 func main() {
 	app := cli.NewApp()
 	app.Name = "git-diffs"
-	app.Version = "0.1.0"
+	app.Version = "1.0.0"
 	app.Description = "The git subcommand that is diff files selector."
 	app.Action = mainAction
 
