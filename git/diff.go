@@ -31,6 +31,7 @@ func DiffNameStatus(isStaged bool) ([]DiffFile, error) {
 	if isStaged {
 		cmd = exec.Command("git", "diff", "--staged", "--name-status")
 	} else {
+		exec.Command("git", "add", "-A", "-N").Run()
 		cmd = exec.Command("git", "diff", "--name-status")
 	}
 	out, err := cmd.Output()
