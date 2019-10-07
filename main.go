@@ -9,12 +9,13 @@ import (
 
 	"github.com/urfave/cli"
 	"github.com/yasukotelin/git-diffs/git"
+	"github.com/gookit/color"
 )
 
 func main() {
 	app := cli.NewApp()
 	app.Name = "git-diffs"
-	app.Version = "1.1.0"
+	app.Version = "1.3.0"
 	app.Description = "The git subcommand that is diff files selector."
 	app.Action = mainAction
 
@@ -36,28 +37,32 @@ func mainAction(c *cli.Context) error {
 		return err
 	}
 
-	fmt.Println("=== Staged files ===")
+	fmt.Println("Staged files:")
 	fmt.Println()
 	stagedFilesLen := len(stagedFiles)
 	if stagedFilesLen == 0 {
-		fmt.Println(" No staged files.")
+		fmt.Println("no staged files.")
 	}
 	for i, file := range stagedFiles {
-		fmt.Printf(" [%d]\t%v\t%v\n", i+1, file.Status, file.Path)
+		color.Green.Printf("\t[%d]\t%v\t%v\n", i+1, file.Status, file.Path)
 	}
 	fmt.Println()
 
-	fmt.Println("=== Unstaged files ===")
+	fmt.Println("Unstaged files:")
 	fmt.Println()
 	unstagedFilesLen := len(unstagedFiles)
 	if unstagedFilesLen == 0 {
-		fmt.Println(" No unstaged files.")
+		fmt.Println("no unstaged files.")
 	}
 	for i, file := range unstagedFiles {
-		fmt.Printf(" [%d]\t%v\t%v\n", i+1+stagedFilesLen, file.Status, file.Path)
+		color.Red.Printf("\t[%d]\t%v\t%v\n", i+1+stagedFilesLen, file.Status, file.Path)
 	}
 	fmt.Println()
 
+	if (stagedFilesLen + unstagedFilesLen == 0) {
+		return nil
+	}
+	
 	fmt.Print("Select number (empty is cancel) => ")
 
 	var selNumStr string
@@ -70,7 +75,7 @@ func mainAction(c *cli.Context) error {
 	if err != nil {
 		return errors.New("your input is not number.")
 	}
-	if selNum > stagedFilesLen + unstagedFilesLen || selNum < 1 {
+	if selNum > stagedFilesLen+unstagedFilesLen || selNum < 1 {
 		return errors.New("your input is out of range numbers")
 	}
 
