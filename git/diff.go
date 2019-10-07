@@ -20,13 +20,42 @@ func Diff(path string, isStaged bool) error {
 }
 
 type DiffFile struct {
-	Text     string
 	Status   string
 	Path     string
 	IsStaged bool
 }
 
-func DiffNameStatus(isStaged bool) ([]DiffFile, error) {
+func DiffFiles(isStaged bool) ([]DiffFile, error) {
+	nameOnly, err := DiffNameOnly(isStaged)
+	if err != nil {
+		return nil, err
+	}
+	nameStatus, err := DiffNameStatus(isStaged)
+	if err != nil {
+		return nil, err
+	}
+
+	// len(nameStatuses) equal len(nameOnlies)
+	rowLen := len(nameOnly)
+
+	diffFile := make([]DiffFile, rowLen)
+	for i := 0; i < rowLen; i++ {
+		path := nameOnly[i]
+		status := strings.Fields(nameStatus[i])
+
+		diffFile[i] = DiffFile{
+			Status: status[0],
+			Path: path,
+			IsStaged: isStaged,
+		}
+	}
+
+	return diffFile, nil
+}
+
+// DiffNameStatus runs `git diff --name-status` git command.
+// If isStaged is true, add `--staged`.
+func DiffNameStatus(isStaged bool) ([]string, error) {
 	var cmd *exec.Cmd
 	if isStaged {
 		cmd = exec.Command("git", "diff", "--staged", "--name-status")
@@ -41,19 +70,25 @@ func DiffNameStatus(isStaged bool) ([]DiffFile, error) {
 
 	rows := strings.Split(string(out), "\n")
 	// Remove the latest empty row.
-	rows = rows[0 : len(rows)-1]
+	return rows[0 : len(rows)-1], nil
+}
 
-	// Divide the status(M, D etc) and file path
-	diffFile := make([]DiffFile, len(rows))
-	for i, row := range rows {
-		splited := strings.Fields(row)
-		diffFile[i] = DiffFile{
-			Text:     row,
-			Status:   splited[0],
-			Path:     splited[1],
-			IsStaged: isStaged,
-		}
+// DiffNameOnly runs `git diff --name-only` git commnad.
+// If isStaged is true, add `--staged`.
+func DiffNameOnly(isStaged bool) ([]string, error) {
+	var cmd *exec.Cmd
+	if isStaged {
+		cmd = exec.Command("git", "diff", "--staged", "--name-only")
+	} else {
+		exec.Command("git", "add", "-A", "-N").Run()
+		cmd = exec.Command("git", "diff", "--name-only")
+	}
+	out, err := cmd.Output()
+	if err != nil {
+		return nil, err
 	}
 
-	return diffFile, nil
+	rows := strings.Split(string(out), "\n")
+	// Remove the latest empty row.
+	return rows[0 : len(rows)-1], nil
 }

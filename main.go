@@ -26,30 +26,38 @@ func main() {
 
 func mainAction(c *cli.Context) error {
 	// get staged files.
-	stagedFiles, err := git.DiffNameStatus(true)
+	stagedFiles, err := git.DiffFiles(true)
 	if err != nil {
 		return err
 	}
-	fmt.Println("=== Staged files ===")
-	stagedFilesLen := len(stagedFiles)
-	for i, file := range stagedFiles {
-		fmt.Printf("[%d] %v\n", i+1, file.Text)
-	}
-
-	fmt.Println()
-
 	// get unstaged files.
-	unstagedFiles, err := git.DiffNameStatus(false)
+	unstagedFiles, err := git.DiffFiles(false)
 	if err != nil {
 		return err
 	}
-	fmt.Println("=== Unstaged files ===")
-	unstagedFilesLen := len(unstagedFiles)
-	for i, file := range unstagedFiles {
-		fmt.Printf("[%d] %v\n", i+1+stagedFilesLen, file.Text)
-	}
 
+	fmt.Println("=== Staged files ===")
 	fmt.Println()
+	stagedFilesLen := len(stagedFiles)
+	if stagedFilesLen == 0 {
+		fmt.Println("No staged files.")
+	}
+	for i, file := range stagedFiles {
+		fmt.Printf(" [%d]\t%v\t%v\n", i+1, file.Status, file.Path)
+	}
+	fmt.Println()
+
+	fmt.Println("=== Unstaged files ===")
+	fmt.Println()
+	unstagedFilesLen := len(unstagedFiles)
+	if unstagedFilesLen == 0 {
+		fmt.Println("No unstaged files.")
+	}
+	for i, file := range unstagedFiles {
+		fmt.Printf(" [%d]\t%v\t%v\n", i+1+stagedFilesLen, file.Status, file.Path)
+	}
+	fmt.Println()
+
 	fmt.Print("Select number (empty is cancel) => ")
 
 	var selNumStr string

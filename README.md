@@ -25,13 +25,15 @@ Or you can download the binary from [release](https://github.com/yasukotelin/git
 ```
 $ git diffs
 === Staged files ===
-[1] D   git.go
-[2] M   main.go
+
+ [1]    D   git.go
+ [2]    M   main.go
 
 === Unstaged files ===
-[3] M   README.md
-[4] M   git/diff.go
-[5] A   images/git-diffs-demo.gif
+
+ [3]    M   README.md
+ [4]    M   git/diff.go
+ [5]    A   images/git-diffs-demo.gif
 
 Select number (empty is cancel) =>
 ```
