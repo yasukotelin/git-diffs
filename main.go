@@ -41,7 +41,7 @@ func mainAction(c *cli.Context) error {
 	fmt.Println()
 	stagedFilesLen := len(stagedFiles)
 	if stagedFilesLen == 0 {
-		fmt.Println("no staged files.")
+		fmt.Println("\tno staged files.")
 	}
 	for i, file := range stagedFiles {
 		color.Green.Printf("\t[%d]\t%v\t%v\n", i+1, file.Status, file.Path)
@@ -52,7 +52,7 @@ func mainAction(c *cli.Context) error {
 	fmt.Println()
 	unstagedFilesLen := len(unstagedFiles)
 	if unstagedFilesLen == 0 {
-		fmt.Println("no unstaged files.")
+		fmt.Println("\tno unstaged files.")
 	}
 	for i, file := range unstagedFiles {
 		color.Red.Printf("\t[%d]\t%v\t%v\n", i+1+stagedFilesLen, file.Status, file.Path)
