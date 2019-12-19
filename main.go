@@ -9,13 +9,13 @@ import (
 
 	"github.com/gookit/color"
 	"github.com/urfave/cli"
-	"github.com/yasukotelin/git-diffs/git"
+	"github.com/yasukotelin/gitlib"
 )
 
 func main() {
 	app := cli.NewApp()
 	app.Name = "git-diffs"
-	app.Version = "1.4.0"
+	app.Version = "1.4.1"
 	app.Description = "The git subcommand that is diff files selector."
 	app.Action = mainAction
 
@@ -27,14 +27,19 @@ func main() {
 
 func mainAction(c *cli.Context) error {
 	// get staged files.
-	stagedFiles, err := git.DiffFiles(true)
+	stagedFiles, err := gitlib.GetDiffFiles(true)
 	if err != nil {
 		return err
 	}
 	// get unstaged files.
-	unstagedFiles, err := git.DiffFiles(false)
+	unstagedFiles, err := gitlib.GetDiffFiles(false)
 	if err != nil {
 		return err
+	}
+
+	fmt.Println("unstaged files")
+	for _, f := range unstagedFiles {
+		fmt.Println(f.Path)
 	}
 
 	for {
@@ -51,7 +56,7 @@ func mainAction(c *cli.Context) error {
 	return nil
 }
 
-func askToSelectFile(stagedFiles []git.DiffFile, unstagedFiles []git.DiffFile) (isContinue bool, err error) {
+func askToSelectFile(stagedFiles []gitlib.DiffFile, unstagedFiles []gitlib.DiffFile) (isContinue bool, err error) {
 	fmt.Println("Staged files:")
 	fmt.Println()
 	stagedFilesLen := len(stagedFiles)
@@ -88,7 +93,7 @@ func askToSelectFile(stagedFiles []git.DiffFile, unstagedFiles []git.DiffFile) (
 	}
 	selNum, err := strconv.Atoi(selNumStr)
 	if err != nil {
-		return false, errors.New("your input is not number.")
+		return false, errors.New("your input is not number")
 	}
 	if selNum > stagedFilesLen+unstagedFilesLen || selNum < 1 {
 		return false, errors.New("your input is out of range numbers")
@@ -97,10 +102,10 @@ func askToSelectFile(stagedFiles []git.DiffFile, unstagedFiles []git.DiffFile) (
 	fmt.Println()
 	if selNum <= stagedFilesLen {
 		// User selected staged file number
-		err = git.Diff(stagedFiles[selNum-1].Path, true)
+		err = gitlib.RunDiff(stagedFiles[selNum-1].Path, true)
 	} else {
 		// User selected unstaged file number
-		err = git.Diff(unstagedFiles[selNum-stagedFilesLen-1].Path, false)
+		err = gitlib.RunDiff(unstagedFiles[selNum-stagedFilesLen-1].Path, false)
 	}
 	if err != nil {
 		return false, err
