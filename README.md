@@ -17,8 +17,6 @@ If you have go environment, you can use `go get` and install.
 go get -u github.com/yasukotelin/git-diffs
 ```
 
-Or you can download the binary from [release](https://github.com/yasukotelin/git-diffs/releases) page. (only windows)
-
 ## Licence
 
 MIT
