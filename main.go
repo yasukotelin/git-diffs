@@ -37,11 +37,6 @@ func mainAction(c *cli.Context) error {
 		return err
 	}
 
-	fmt.Println("unstaged files")
-	for _, f := range unstagedFiles {
-		fmt.Println(f.Path)
-	}
-
 	for {
 		isContinue, err := askToSelectFile(stagedFiles, unstagedFiles)
 		if err != nil {
