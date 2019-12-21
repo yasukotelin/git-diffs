@@ -20,5 +20,7 @@ github.com/yasukotelin/gitlib v0.0.0-20191219135115-f9bf52208555 h1:JLB+Y2VOQ+i5
 github.com/yasukotelin/gitlib v0.0.0-20191219135115-f9bf52208555/go.mod h1:+1R6WaQSbVnLKSFHaDbiLtLUdqy0XoBSBPwqM6EKNno=
 github.com/yasukotelin/gitlib v0.0.0-20191219141545-28ddd4ccc329 h1:UCIC8BeWnZgIieRPI3GN6z5WsR+TWHvxXcTQj2enZTg=
 github.com/yasukotelin/gitlib v0.0.0-20191219141545-28ddd4ccc329/go.mod h1:+1R6WaQSbVnLKSFHaDbiLtLUdqy0XoBSBPwqM6EKNno=
+github.com/yasukotelin/scrlib v0.0.0-20190218052844-4051981f446c h1:ZbsaOa1DdA332D0pv9SxE1u3yY1C0qPH9ZUAdz3ueCI=
+github.com/yasukotelin/scrlib v0.0.0-20190218052844-4051981f446c/go.mod h1:Jq2rjxTojl9LlhqmSKucVHgpoSn1jhHRlVT4XLYX9ec=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v2 v2.2.2/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
