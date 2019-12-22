@@ -10,6 +10,7 @@ import (
 	"github.com/gookit/color"
 	"github.com/urfave/cli"
 	"github.com/yasukotelin/gitlib"
+	"github.com/yasukotelin/scrlib"
 )
 
 func main() {
@@ -56,8 +57,13 @@ func mainAction(c *cli.Context) error {
 		if err != nil {
 			return err
 		}
-	}
 
+		fmt.Println()
+		fmt.Print("(Enter)")
+		fmt.Scanln()
+
+		scrlib.Clear()
+	}
 	return nil
 }
 
@@ -121,4 +127,14 @@ func runDiff(number int, stagedFiles, unstagedFiles []gitlib.DiffFile) error {
 	}
 
 	return nil
+}
+
+func askToContinue() bool {
+	fmt.Print("Continue[Enter] or Quit(q): ")
+	var input string
+	fmt.Scanln(&input)
+	if input == "q" || input == "quit" {
+		return false
+	}
+	return true
 }
