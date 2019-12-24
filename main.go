@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"log"
@@ -16,7 +17,7 @@ import (
 func main() {
 	app := cli.NewApp()
 	app.Name = "git-diffs"
-	app.Version = "1.5.0"
+	app.Version = "1.6.0"
 	app.Description = "The git subcommand that is diff files selector."
 	app.Action = mainAction
 
@@ -39,6 +40,8 @@ func mainAction(c *cli.Context) error {
 	}
 
 	for {
+		scrlib.Clear()
+
 		printFiles(stagedFiles, unstagedFiles)
 		totalLen := len(stagedFiles) + len(unstagedFiles)
 		if totalLen == 0 {
@@ -59,10 +62,8 @@ func mainAction(c *cli.Context) error {
 		}
 
 		fmt.Println()
-		fmt.Print("(Enter)")
-		fmt.Scanln()
-
-		scrlib.Clear()
+		fmt.Print("(Press any key)")
+		bufio.NewScanner(os.Stdin).Scan()
 	}
 	return nil
 }
